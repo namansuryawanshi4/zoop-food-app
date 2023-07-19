@@ -36391,7 +36391,38 @@ var LOGO_URL = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQE41zLlITF
 exports.LOGO_URL = LOGO_URL;
 var MENU_URL = "https://www.swiggy.com/dapi/menu/pl?page-type=REGULAR_MENU&complete-menu=true&lat=18.5904779&lng=73.7271909&restaurantId=";
 exports.MENU_URL = MENU_URL;
-},{}],"src/components/Header.js":[function(require,module,exports) {
+},{}],"src/utils/useOnlineStatus.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+var _react = require("react");
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
+function _iterableToArrayLimit(arr, i) { var _i = null == arr ? null : "undefined" != typeof Symbol && arr[Symbol.iterator] || arr["@@iterator"]; if (null != _i) { var _s, _e, _x, _r, _arr = [], _n = !0, _d = !1; try { if (_x = (_i = _i.call(arr)).next, 0 === i) { if (Object(_i) !== _i) return; _n = !1; } else for (; !(_n = (_s = _x.call(_i)).done) && (_arr.push(_s.value), _arr.length !== i); _n = !0); } catch (err) { _d = !0, _e = err; } finally { try { if (!_n && null != _i.return && (_r = _i.return(), Object(_r) !== _r)) return; } finally { if (_d) throw _e; } } return _arr; } }
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+var useOnlineStatus = function useOnlineStatus() {
+  var _useState = (0, _react.useState)(true),
+    _useState2 = _slicedToArray(_useState, 2),
+    onlineStatus = _useState2[0],
+    setOnlineStatus = _useState2[1];
+  (0, _react.useEffect)(function () {
+    window.addEventListener("offline", function () {
+      setOnlineStatus(false);
+    });
+    window.addEventListener("online", function () {
+      setOnlineStatus(true);
+    });
+  }, []);
+  return onlineStatus; // boolean value
+};
+var _default = useOnlineStatus;
+exports.default = _default;
+},{"react":"node_modules/react/index.js"}],"src/components/Header.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -36401,6 +36432,8 @@ exports.default = void 0;
 var _react = _interopRequireWildcard(require("react"));
 var _constants = require("../utils/constants");
 var _reactRouterDom = require("react-router-dom");
+var _useOnlineStatus = _interopRequireDefault(require("../utils/useOnlineStatus"));
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
@@ -36414,19 +36447,20 @@ var Header = function Header() {
     _useState2 = _slicedToArray(_useState, 2),
     btnName = _useState2[0],
     setBtnName = _useState2[1];
+  var onlineStatus = (0, _useOnlineStatus.default)();
   return /*#__PURE__*/_react.default.createElement("div", {
-    className: "header"
+    className: "flex"
   }, /*#__PURE__*/_react.default.createElement("div", {
     className: "logo-container"
   }, /*#__PURE__*/_react.default.createElement("img", {
-    className: "logo",
+    className: "w-30",
     src: _constants.LOGO_URL,
     alt: "logo"
   }), /*#__PURE__*/_react.default.createElement("h3", {
     className: "title-name"
   }, "Zoop-Delivery...")), /*#__PURE__*/_react.default.createElement("div", {
     className: "nav-items"
-  }, /*#__PURE__*/_react.default.createElement("ul", null, /*#__PURE__*/_react.default.createElement("li", null, /*#__PURE__*/_react.default.createElement(_reactRouterDom.Link, {
+  }, /*#__PURE__*/_react.default.createElement("ul", null, /*#__PURE__*/_react.default.createElement("li", null, "Online Status: ", onlineStatus ? "🟢" : "🔴"), /*#__PURE__*/_react.default.createElement("li", null, /*#__PURE__*/_react.default.createElement(_reactRouterDom.Link, {
     to: "/"
   }, "Home")), /*#__PURE__*/_react.default.createElement("li", null, /*#__PURE__*/_react.default.createElement(_reactRouterDom.Link, {
     to: "/about"
@@ -36441,7 +36475,7 @@ var Header = function Header() {
 };
 var _default = Header;
 exports.default = _default;
-},{"react":"node_modules/react/index.js","../utils/constants":"src/utils/constants.js","react-router-dom":"node_modules/react-router-dom/dist/index.js"}],"src/components/RestaurantCard.js":[function(require,module,exports) {
+},{"react":"node_modules/react/index.js","../utils/constants":"src/utils/constants.js","react-router-dom":"node_modules/react-router-dom/dist/index.js","../utils/useOnlineStatus":"src/utils/useOnlineStatus.js"}],"src/components/RestaurantCard.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -36525,6 +36559,7 @@ var _react = _interopRequireWildcard(require("react"));
 var _RestaurantCard = _interopRequireDefault(require("./RestaurantCard"));
 var _Shimmer = _interopRequireDefault(require("./Shimmer"));
 var _reactRouterDom = require("react-router-dom");
+var _useOnlineStatus = _interopRequireDefault(require("../utils/useOnlineStatus"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
@@ -36581,6 +36616,8 @@ var Body = function Body() {
       return _ref.apply(this, arguments);
     };
   }();
+  var onlineStatus = (0, _useOnlineStatus.default)();
+  if (onlineStatus === false) return /*#__PURE__*/_react.default.createElement("h1", null, "Looks like you are offline !! Please check your connection.");
 
   // Conditional rendering using Ternary operator
 
@@ -36627,7 +36664,7 @@ var Body = function Body() {
 };
 var _default = Body;
 exports.default = _default;
-},{"react":"node_modules/react/index.js","./RestaurantCard":"src/components/RestaurantCard.js","./Shimmer":"src/components/Shimmer.js","react-router-dom":"node_modules/react-router-dom/dist/index.js"}],"src/components/UserClass.js":[function(require,module,exports) {
+},{"react":"node_modules/react/index.js","./RestaurantCard":"src/components/RestaurantCard.js","./Shimmer":"src/components/Shimmer.js","react-router-dom":"node_modules/react-router-dom/dist/index.js","../utils/useOnlineStatus":"src/utils/useOnlineStatus.js"}],"src/components/UserClass.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -36705,13 +36742,14 @@ var UserClass = /*#__PURE__*/function (_React$Component) {
       var _this$state$userInfo = this.state.userInfo,
         name = _this$state$userInfo.name,
         location = _this$state$userInfo.location,
-        avatar_url = _this$state$userInfo.avatar_url;
+        avatar_url = _this$state$userInfo.avatar_url,
+        bio = _this$state$userInfo.bio;
       return /*#__PURE__*/_react.default.createElement("div", {
         className: "user-card"
       }, /*#__PURE__*/_react.default.createElement("h1", null, "Contact us"), /*#__PURE__*/_react.default.createElement("img", {
         src: avatar_url,
         alt: "image"
-      }), /*#__PURE__*/_react.default.createElement("h3", null, "Name: ", name), /*#__PURE__*/_react.default.createElement("h3", null, "Location: ", location), /*#__PURE__*/_react.default.createElement("h3", null, "Contact: namansuryawanshi0409@gmail.com"));
+      }), /*#__PURE__*/_react.default.createElement("h3", null, "Name: ", name), /*#__PURE__*/_react.default.createElement("h3", null, "Role: ", bio), /*#__PURE__*/_react.default.createElement("h3", null, "Location: ", location), /*#__PURE__*/_react.default.createElement("h3", null, "Contact: namansuryawanshi0409@gmail.com"));
     }
   }]);
   return UserClass;
@@ -37005,7 +37043,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60536" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "57710" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];

@@ -8,3 +8,6 @@
 # misc
 /cache
 /vscode
+
+# dependency lock file
+/package-lock.json
